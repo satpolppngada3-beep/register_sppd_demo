@@ -1,7 +1,7 @@
 {
-  "name": "REGISTER SPPD - Satpol PP & Kebakaran Kab. Ngada",
+  "name": "REGISTER SPPD - Nama Instansi / Dinas Kab. Ngada",
   "short_name": "REGISTER SPPD",
-  "description": "Register Surat Tugas & SPPD Satpol PP dan Kebakaran Kabupaten Ngada",
+  "description": "Register Surat Tugas & SPPD Nama Instansi / Dinas Kabupaten Ngada",
   "id": "/",
   "start_url": "/",
   "scope": "/",
