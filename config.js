@@ -16,7 +16,7 @@
  * (URL /exec berubah), cukup ganti nilai di sini saja — tidak perlu
  * menyentuh index.html sama sekali.
  */
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbzLytEf0k7HLd2nVDb_r9pXCj-sbqy269qGc0kPT2WRzqkGLGdezI7yze5LxIEbBw8ynQ/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyYTyAfBavH1JhdUuTnTbfEAhVMl0T5mLOLEGvc4MdfEstUCITLdlltcXxbLOUsrlNmdg/exec';
 
 /** Judul aplikasi — ditampilkan di tab browser (dipakai index.html, opsional) */
 const APP_TITLE = 'REGISTER SPPD';
