@@ -937,3 +937,18 @@ function resetDataDlg(){const m=document.createElement('div');m.className='modal
   const done=busy($('#rk'),'Memproses…');
   try{const ok=await run(()=>api('resetData',S.t,pass));if(ok){m.remove();S.rrpdCache={};S.ajuSnap=null;S.kasSnap=null;toast('Data SPPD, Kwitansi, Laporan, Pengajuan Pencairan, dan RRPD berhasil direset. Nomor Surat Tugas/SPPD dimulai dari awal.');S.view='dash';load()}else if(document.body.contains(m)){$('#rp1').value=''}}finally{done()}}}
 restore();
+
+/* [DEMO] Control Panel: Warna Tampilan (Pilihan Warna, Animasi Partikel, Hewan Pengikut Kursor, Matikan Animasi di HP)
+   dan Pengaturan Cetak > Zona Berbahaya (RESET DATA) dinonaktifkan di VERSI DEMO. */
+(function(){
+ const PESAN='Fitur ini dinonaktifkan pada VERSI DEMO';
+ const SEL='button,input,select,textarea,label,[data-tw],[data-pk],[data-hw]';
+ const kena=t=>{if(!t||!t.closest)return false;if(t.closest('#rd'))return true;return typeof S!=='undefined'&&S.view==='tampilan'&&!!t.closest('#main')&&!!t.closest(SEL)};
+ let tk=0;const kabar=()=>{const n=Date.now();if(n-tk>1200){tk=n;toast(PESAN,1)}};
+ ['mousedown','pointerdown','touchstart','dblclick','change','input'].forEach(ev=>document.addEventListener(ev,e=>{if(kena(e.target)){e.preventDefault();e.stopImmediatePropagation()}},true));
+ document.addEventListener('click',e=>{if(kena(e.target)){e.preventDefault();e.stopImmediatePropagation();kabar()}},true);
+ document.addEventListener('keydown',e=>{if(kena(e.target)&&e.key!=='Tab'){e.preventDefault();e.stopImmediatePropagation();kabar()}},true);
+ const st=document.createElement('style');st.textContent='#main.demo-off .glass{opacity:.55}#main.demo-off .glass *{cursor:not-allowed!important}#rd{opacity:.55;cursor:not-allowed!important}';document.head.appendChild(st);
+ const pantau=()=>{const m=document.getElementById('main');if(m)m.classList.toggle('demo-off',typeof S!=='undefined'&&S.view==='tampilan')};
+ new MutationObserver(pantau).observe(document.documentElement,{childList:true,subtree:true});
+})();
