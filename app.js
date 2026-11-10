@@ -28,7 +28,7 @@ async function flushQ_(){const q=_bq;_bq=null;if(!q||!q.length)return;
 function warmPing(){try{if(Date.now()-(+sessionStorage.getItem('sppd_warm')||0)<240000)return;sessionStorage.setItem('sppd_warm',String(Date.now()))}catch(e){}
  try{fetch(GAS_URL+'?w=1',{mode:'no-cors'}).catch(()=>{})}catch(e){}} // bangunkan server selagi pengguna mengetik sandi
 const BL=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-const BID=['Trantibum','Sekretariat','Linmas','Damkar'];
+const BID=['BIDANG 1','BIDANG 2','BIDANG 3','BIDANG 4'];
 const idn=s=>{if(!s)return'-';const[y,m,d]=s.split('-');return d+' '+BL[m-1].slice(0,3)+' '+y};
 const addD=(s,n)=>{const[y,m,d]=s.split('-').map(Number),t=new Date(y,m-1,d+n);return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0')};
 const clash=(nip,s,l,ex)=>{l=+l;if(!s||!l)return;const e=addD(s,l-1);return S.jadwal.find(r=>String(r.NIP)===String(nip)&&r.NoST!==ex&&r.Berangkat<=e&&r.Kembali>=s)};
@@ -880,12 +880,12 @@ function pjbR(c){
  const f=(k,l)=>`<div><label for="${k}">${l}</label><input id="${k}" class="inp" value="${esc(c[k])}"></div>`,
  bl=(t,d,body)=>`<div class="glass p-5 mb-4"><b>${t}</b><p class="text-xs" style="color:var(--text-2)">${d}</p><div class="grid gap-3 md:grid-cols-2 mt-1">${body}</div></div>`,
  K=['TTD_JABATAN','TTD_NAMA','TTD_PANGKAT','TTD_NIP','KWI_KPA_NAMA','KWI_KPA_NIP','KWI_BENDAHARA_NAMA','KWI_BENDAHARA_NIP'];
- BID.forEach(b=>K.push('KWI_PPTK_'+b.toUpperCase()+'_NAMA','KWI_PPTK_'+b.toUpperCase()+'_NIP'));
+ BID.forEach(b=>K.push('KWI_PPTK_'+b.toUpperCase().replace(/\s+/g,'_')+'_NAMA','KWI_PPTK_'+b.toUpperCase().replace(/\s+/g,'_')+'_NIP'));
  $('#main').innerHTML=`<h1 class="text-2xl font-bold mb-3">Pengaturan Pejabat Penandatangan</h1>
  ${bl('Penandatangan Surat Tugas & SPPD','Pimpinan yang menandatangani Surat Tugas dan SPPD. File tanda tangan (PNG) diatur di Pengaturan Cetak.',f('TTD_JABATAN','Jabatan')+f('TTD_NAMA','Nama')+f('TTD_PANGKAT','Pangkat / Golongan')+f('TTD_NIP','NIP'))}
  ${bl('Kuasa Pengguna Anggaran (Kwitansi)','Tampil pada bagian "Mengetahui".',f('KWI_KPA_NAMA','Nama')+f('KWI_KPA_NIP','NIP'))}
  ${bl('Bendahara Pengeluaran (Kwitansi)','',f('KWI_BENDAHARA_NAMA','Nama')+f('KWI_BENDAHARA_NIP','NIP'))}
- ${bl('Pejabat Pelaksana Teknis Kegiatan - Kepala Bidang (Kwitansi)','Otomatis mengikuti bidang pada Surat Tugas. Kosongkan jika belum ada.',BID.map(b=>f('KWI_PPTK_'+b.toUpperCase()+'_NAMA','Kepala Bidang '+b+' — Nama')+f('KWI_PPTK_'+b.toUpperCase()+'_NIP','Kepala Bidang '+b+' — NIP')).join(''))}
+ ${bl('Pejabat Pelaksana Teknis Kegiatan - Kepala Bidang (Kwitansi)','Otomatis mengikuti bidang pada Surat Tugas. Kosongkan jika belum ada.',BID.map(b=>f('KWI_PPTK_'+b.toUpperCase().replace(/\s+/g,'_')+'_NAMA','Kepala '+(/^bidang/i.test(b)?'':'Bidang ')+b+' — Nama')+f('KWI_PPTK_'+b.toUpperCase().replace(/\s+/g,'_')+'_NIP','Kepala '+(/^bidang/i.test(b)?'':'Bidang ')+b+' — NIP')).join(''))}
  <button class="btn" id="sj">Simpan Pejabat Penandatangan</button>`;
  $('#sj').onclick=async()=>{const o={};K.forEach(k=>o[k]=$('#'+k).value);const ok=await run(async()=>{await api('saveCfg',S.t,o);return true},'Pejabat penandatangan disimpan');if(ok)cfgIsi_(o)};
  $('#main').addEventListener('input',()=>{S._cfgDirty=true})}
